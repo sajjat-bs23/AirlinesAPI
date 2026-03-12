@@ -18,6 +18,8 @@ builder.Services.AddDbContext<AirlinesDbContext>(options =>
 
 builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 builder.Services.AddScoped<IFlightSearchService, FlightSearchService>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<ITicketSearchService, TicketSearchService>();
 
 var app = builder.Build();
 
