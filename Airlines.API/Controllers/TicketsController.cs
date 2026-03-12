@@ -21,6 +21,12 @@ public class TicketsController : ControllerBase
         [FromQuery] TicketSearchRequest request,
         CancellationToken cancellationToken)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ApiResponse<PagedResult<TicketSearchResultDto>>.Fail(
+                "Invalid date format"));
+        }
+
         var hasAnyCriteria =
             request.TicketId is not null ||
             request.ClientId is not null ||
