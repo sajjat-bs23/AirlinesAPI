@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Airlines.API.Tests/Airlines.API.Tests.csproj" />
   <Project Path="Airlines.API/Airlines.API.csproj" />
 </Solution>
