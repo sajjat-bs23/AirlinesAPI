@@ -22,25 +22,25 @@ public class FlightsController : ControllerBase
         return await _context.Flights.AsNoTracking().ToListAsync();
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<Flight>> GetFlight(int id)
-    {
-        var flight = await _context.Flights.FindAsync(id);
-        if (flight is null)
-        {
-            return NotFound();
-        }
+    //[HttpGet("{id:int}")]
+    //public async Task<ActionResult<Flight>> GetFlight(int id)
+    //{
+    //    var flight = await _context.Flights.FindAsync(id);
+    //    if (flight is null)
+    //    {
+    //        return NotFound();
+    //    }
 
-        return flight;
-    }
+    //    return flight;
+    //}
 
-    [HttpPost]
-    public async Task<ActionResult<Flight>> CreateFlight(Flight flight)
-    {
-        _context.Flights.Add(flight);
-        await _context.SaveChangesAsync();
+    //[HttpPost]
+    //public async Task<ActionResult<Flight>> CreateFlight(Flight flight)
+    //{
+    //    _context.Flights.Add(flight);
+    //    await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetFlight), new { id = flight.Id }, flight);
-    }
+    //    return CreatedAtAction(nameof(GetFlight), new { id = flight.Id }, flight);
+    //}
 }
 
