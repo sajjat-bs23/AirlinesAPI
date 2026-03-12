@@ -1,4 +1,6 @@
 using Airlines.API.Data;
+using Airlines.API.Repositories;
+using Airlines.API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.AddDbContext<AirlinesDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseNpgsql(connectionString);
 });
+
+builder.Services.AddScoped<IFlightRepository, FlightRepository>();
+builder.Services.AddScoped<IFlightSearchService, FlightSearchService>();
 
 var app = builder.Build();
 
