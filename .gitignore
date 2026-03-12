@@ -1,0 +1,89 @@
+﻿# .NET Core
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+#publish
+publish/
+# Visual Studio
+.vs/
+.logs/
+# Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/
+
+# User secrets
+secrets.json
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+
+# NUGET
+*.nupkg
+# NuGet Symbol Packages
+*.snupkg
+
+# Others
+*.dbmdl
+*.pdb
+*.cache
+*.mdb
+*.opendb
+*.VC.db
+*.vshost.*
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# DotCover
+*.dotCover
+
+# Azure Pipelines
+.azure-pipelines/
+
+# Local history for Visual Studio
+.localhistory/
+
+# Windows image file caches
+Thumbs.db
+ ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code settings
+.history/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Dotnet watch
+**/node_modules/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+SLACloud.API/Logs/
+.sonarqube
+/Visual Studio 2022/Visualizers
+SLACloud.API/wwwroot/uploads/photos/**
