@@ -10,6 +10,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// CORS – allow your React dev app
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendCors", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173") // Vite dev URL
+            .AllowAnyHeader()
+            .AllowAnyMethod();                    // GET/POST/OPTIONS...
+    });
+});
+
 builder.Services.AddDbContext<AirlinesDbContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -31,6 +43,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// IMPORTANT: CORS must be before UseAuthorization / MapControllers
+app.UseCors("FrontendCors");
 
 app.UseAuthorization();
 
