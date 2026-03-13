@@ -13,6 +13,10 @@ public class Employee
     public DateOnly AdmiDate { get; set; }
     public decimal Salary { get; set; }
 
+    // For demo purposes only – store a password.
+    // In a real system you should use a strong hash (e.g. PBKDF2, bcrypt, Argon2).
+    public string Password { get; set; } = string.Empty;
+
     public int DeptId { get; set; }
 
     public Department? Department { get; set; }

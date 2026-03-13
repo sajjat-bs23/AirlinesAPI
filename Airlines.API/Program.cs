@@ -1,14 +1,18 @@
+using Airlines.API;
 using Airlines.API.Data;
 using Airlines.API.Repositories;
 using Airlines.API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddCustomSwagger();
 
 // CORS – allow your React dev app
 builder.Services.AddCors(options =>
@@ -32,6 +36,46 @@ builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 builder.Services.AddScoped<IFlightSearchService, FlightSearchService>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<ITicketSearchService, TicketSearchService>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// JWT authentication
+var jwtSection = builder.Configuration.GetSection("Jwt");
+builder.Services.Configure<JwtSettings>(jwtSection);
+
+var jwtIssuer = jwtSection["Issuer"];
+var jwtAudience = jwtSection["Audience"];
+var jwtKey = jwtSection["Key"];
+
+if (string.IsNullOrWhiteSpace(jwtIssuer) ||
+    string.IsNullOrWhiteSpace(jwtAudience) ||
+    string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new InvalidOperationException("JWT settings are missing or invalid in configuration.");
+}
+
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = signingKey,
+            ClockSkew = TimeSpan.FromMinutes(1)
+        };
+    });
 
 var app = builder.Build();
 
@@ -44,9 +88,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// IMPORTANT: CORS must be before UseAuthorization / MapControllers
+// IMPORTANT: CORS must be before authentication / authorization / MapControllers
 app.UseCors("FrontendCors");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

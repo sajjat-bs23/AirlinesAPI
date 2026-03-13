@@ -3,12 +3,14 @@ using Airlines.API.Contracts.Responses;
 using Airlines.API.Data;
 using Airlines.API.Models;
 using Airlines.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airlines.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class FlightsController : ControllerBase
 {
