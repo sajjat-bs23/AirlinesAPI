@@ -1,0 +1,107 @@
+FRONTEND TEST INPUTS (COPY/PASTE READY)
+
+==================================================
+LOGIN PAGE
+==================================================
+EmpId: 1
+Password: 12345
+
+Alt login:
+EmpId: 6
+Password: 12345
+
+==================================================
+FLIGHT SEARCH PAGE
+==================================================
+Test 1
+Departure Airport ID: 1
+Arrival Airport ID: 3
+Departure Date: 2022-09-01
+Flight Number: CB2204
+
+Test 2
+Departure Airport ID: 1
+Arrival Airport ID: 4
+Departure Date: 2022-09-01
+Flight Number: CB1104
+
+Test 3
+Departure Airport ID: 1
+Arrival Airport ID: 5
+Departure Date: 2022-09-01
+Flight Number: CB4404
+
+==================================================
+TICKET SEARCH PAGE
+==================================================
+Test 1
+Ticket ID: 1
+Client ID:
+First name:
+Last name:
+Flight number:
+Flight date:
+
+Test 2
+Ticket ID:
+Client ID: 6
+First name:
+Last name:
+Flight number:
+Flight date:
+
+Test 3
+Ticket ID:
+Client ID:
+First name: Edeline
+Last name: Firle
+Flight number: CB1105
+Flight date: 2022-09-01
+
+==================================================
+SALES PREVIEW PAGE
+==================================================
+Test 1
+Client ID: 1
+Passenger Count: 2
+Flight Number: CB2204
+Flight Date: 2022-09-01
+Preselected Flight ID:
+User ID: 1
+
+Test 2
+Client ID: 6
+Passenger Count: 1
+Flight Number: CB1105
+Flight Date: 2022-09-01
+Preselected Flight ID:
+User ID: 6
+
+==================================================
+SALES CONFIRM PAGE (if needed manually)
+==================================================
+{
+  "clientId": 1,
+  "flightId": 1,
+  "flightNumber": "CB2204",
+  "flightDate": "2022-09-01",
+  "passengerCount": 2,
+  "unitPrice": 120.99,
+  "totalPrice": 241.98,
+  "empId": 1
+}
+
+==================================================
+PASSENGER IMPORT PAGE
+==================================================
+1) Click Download template
+2) Fill CSV with this header exactly:
+FirstName,LastName,Address,City,Country,ZipCode,Telephone,Email
+
+Sample rows:
+John,Doe,123 Main St,New York,USA,10001,5551234567,john.doe@example.com
+Jane,Smith,200 Market St,Los Angeles,USA,90001,5557771234,jane.smith@example.com
+
+3) Upload CSV file
+4) Click Import passengers
+
