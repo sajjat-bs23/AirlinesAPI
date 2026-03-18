@@ -39,6 +39,8 @@ builder.Services.AddScoped<ITicketSearchService, TicketSearchService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISellService, SellService>();
+builder.Services.AddScoped<IPassengerRepository, PassengerRepository>();
+builder.Services.AddScoped<IPassengerImportService, PassengerImportService>();
 
 // JWT authentication
 var jwtSection = builder.Configuration.GetSection("Jwt");

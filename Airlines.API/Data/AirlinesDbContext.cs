@@ -29,6 +29,9 @@ public class AirlinesDbContext : DbContext
         modelBuilder.Entity<Airplane>().HasKey(a => a.AirplaneId);
         modelBuilder.Entity<Flight>().HasKey(f => f.FlightId);
         modelBuilder.Entity<Passenger>().HasKey(p => p.ClientId);
+        modelBuilder.Entity<Passenger>()
+            .Property(p => p.ClientId)
+            .ValueGeneratedOnAdd();
         modelBuilder.Entity<Ticket>().HasKey(t => t.TicketId);
         modelBuilder.Entity<Employee>().HasKey(e => e.EmpId);
         modelBuilder.Entity<Department>().HasKey(d => d.DeptId);
