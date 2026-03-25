@@ -38,6 +38,18 @@ public class PassengerRepository : IPassengerRepository
             return 0;
         }
 
+        // Keep PostgreSQL identity sequence aligned with existing rows.
+        await _dbContext.Database.ExecuteSqlRawAsync(
+            """
+            SELECT setval(
+                pg_get_serial_sequence('"Passengers"', 'ClientId'),
+                COALESCE((SELECT MAX("ClientId") FROM "Passengers"), 1),
+                
+                true
+            );
+            """,
+            cancellationToken);
+
         await _dbContext.Passengers.AddRangeAsync(passengers, cancellationToken);
         return await _dbContext.SaveChangesAsync(cancellationToken);
     }
