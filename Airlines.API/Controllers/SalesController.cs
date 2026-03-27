@@ -50,5 +50,22 @@ public class SalesController : ControllerBase
 
         return Ok(result);
     }
+
+    // Get printable ticket details for a confirmed sale
+    // GET: /api/sales/{buyId}/print-ticket
+    [HttpGet("{buyId:int}/print-ticket")]
+    public async Task<ActionResult<PrintTicketResponse>> GetPrintTicket(
+        [FromRoute] int buyId,
+        CancellationToken cancellationToken)
+    {
+        var result = await _sellService.GetPrintTicketAsync(buyId, cancellationToken);
+
+        if (!result.IsFound)
+        {
+            return NotFound(result);
+        }
+
+        return Ok(result);
+    }
 }
 

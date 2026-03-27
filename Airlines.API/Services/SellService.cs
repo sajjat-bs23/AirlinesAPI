@@ -9,6 +9,7 @@ public interface ISellService
 {
     Task<SalePreviewResponse> ValidateSellStep1Async(SalePreviewRequest request, CancellationToken cancellationToken);
     Task<ConfirmSaleResponse> ConfirmSaleAsync(ConfirmSaleRequest request, CancellationToken cancellationToken);
+    Task<PrintTicketResponse> GetPrintTicketAsync(int buyId, CancellationToken cancellationToken);
 }
 
 public class SellService : ISellService
@@ -215,6 +216,84 @@ public class SellService : ISellService
         catch (Exception ex)
         {
             response.Message = $"AN ERROR OCCURRED DURING CONFIRM PROCESS: {ex.Message}";
+            return response;
+        }
+    }
+
+    public async Task<PrintTicketResponse> GetPrintTicketAsync(
+        int buyId,
+        CancellationToken cancellationToken)
+    {
+        var response = new PrintTicketResponse();
+
+        try
+        {
+            var buy = await _dbContext.Buys
+                .AsNoTracking()
+                .Include(b => b.Client)
+                .Include(b => b.Tickets)
+                    .ThenInclude(t => t.Flight)
+                        .ThenInclude(f => f!.AirportDep)
+                .Include(b => b.Tickets)
+                    .ThenInclude(t => t.Flight)
+                        .ThenInclude(f => f!.AirportArr)
+                .FirstOrDefaultAsync(b => b.BuyId == buyId, cancellationToken);
+
+            if (buy is null)
+            {
+                response.Message = "BUY ID NOT FOUND";
+                return response;
+            }
+
+            var orderedTickets = buy.Tickets
+                .OrderBy(t => t.TicketId)
+                .ToList();
+
+            if (orderedTickets.Count == 0)
+            {
+                response.Message = "NO TICKET FOUND FOR THIS BUY";
+                return response;
+            }
+
+            var firstFlight = orderedTickets[0].Flight;
+            if (firstFlight is null)
+            {
+                response.Message = "FLIGHT DATA IS MISSING FOR THIS TICKET";
+                return response;
+            }
+
+            response.IsFound = true;
+            response.Message = "TICKET READY";
+
+            response.BuyId = buy.BuyId;
+            response.BuyDate = buy.BuyDate;
+            response.BuyTime = buy.BuyTime;
+
+            response.ClientId = buy.ClientId;
+            response.PassengerFirstName = buy.Client?.FirstName ?? string.Empty;
+            response.PassengerLastName = buy.Client?.LastName ?? string.Empty;
+
+            response.FlightNumber = firstFlight.FlightNum;
+            response.FlightDate = firstFlight.FlightDate;
+            response.DepartureTime = firstFlight.DepTime;
+            response.ArrivalTime = firstFlight.ArrTime;
+            response.AirportDeparture = firstFlight.AirportDep?.AirportId.ToString() ?? string.Empty;
+            response.AirportArrival = firstFlight.AirportArr?.AirportId.ToString() ?? string.Empty;
+
+            response.TicketCount = orderedTickets.Count;
+            response.TotalPrice = buy.Price;
+            response.Seats = orderedTickets.Select(t => t.Seat).ToList();
+
+            return response;
+        }
+        catch (DbUpdateException ex)
+        {
+            response.Message = $"AN ERROR OCCURRED DURING PRINT TICKET PROCESS: {ex.InnerException?.Message ?? ex.Message}";
+            return response;
+        }
+        catch (Exception ex)
+        {
+            response.Message = $"AN ERROR OCCURRED DURING PRINT TICKET PROCESS: {ex.Message}";
             return response;
         }
     }
