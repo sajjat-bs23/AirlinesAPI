@@ -181,6 +181,18 @@ public class SellService : ISellService
             _dbContext.Buys.Add(buy);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
+            // Keep PostgreSQL identity sequence aligned with imported/manual data.
+            // Without this, next generated TicketId can collide with existing rows.
+            await _dbContext.Database.ExecuteSqlRawAsync(
+                """
+                SELECT setval(
+                    pg_get_serial_sequence('"Tickets"', 'TicketId'),
+                    COALESCE((SELECT MAX("TicketId") FROM "Tickets"), 1),
+                    true
+                );
+                """,
+                cancellationToken);
+
             var startSeatNumber = existingTickets + 1;
             var tickets = new List<Ticket>();
 
