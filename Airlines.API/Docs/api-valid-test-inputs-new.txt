@@ -1,0 +1,52 @@
+FRONTEND/API TEST INPUTS (NEW DEMO DATA)
+
+==================================================
+LOGIN PAGE
+==================================================
+EmpId: 1001
+Password: demo123
+
+==================================================
+FLIGHT SEARCH PAGE
+==================================================
+Test 1 (new)
+Departure Airport ID: 1
+Arrival Airport ID: 3
+Departure Date: 2026-04-15
+Flight Number: CB2604
+
+==================================================
+TICKET SEARCH PAGE
+==================================================
+Test 1 (new)
+Ticket ID: 1001
+Client ID: 1001
+First name: Noah
+Last name: Bennett
+Flight number: CB2604
+Flight date: 2026-04-15
+
+==================================================
+SALES PREVIEW PAGE
+==================================================
+Test 1 (new)
+Client ID: 1001
+Passenger Count: 1
+Flight Number: CB2604
+Flight Date: 2026-04-15
+Preselected Flight ID: 1001
+User ID: 1001
+
+==================================================
+SALES CONFIRM PAGE
+==================================================
+{
+  "clientId": 1001,
+  "flightId": 1001,
+  "flightNumber": "CB2604",
+  "flightDate": "2026-04-15",
+  "passengerCount": 1,
+  "unitPrice": 149.99,
+  "totalPrice": 149.99,
+  "empId": 1001
+}
